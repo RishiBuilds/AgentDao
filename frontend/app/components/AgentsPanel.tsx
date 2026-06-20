@@ -38,48 +38,49 @@ export default function AgentsPanel({ refreshKey }: AgentsPanelProps) {
   };
 
   return (
-    <div className="glass-card p-6">
+    <div className="nb-card p-6">
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
+        <h2 className="text-sm font-bold uppercase tracking-widest text-[var(--nb-foreground)]">
           Active Agents
         </h2>
-        <GlowIcon icon={Cpu} glowClass="icon-glow-cyan" size={18} />
+        <GlowIcon icon={Cpu} glowClass="nb-icon-cyan" size={18} />
       </div>
 
       {loading ? (
-        <div className="animate-pulse space-y-3">
-          <div className="h-14 bg-white/[0.04] rounded-lg" />
-          <div className="h-14 bg-white/[0.04] rounded-lg" />
+        <div className="space-y-3">
+          <div className="h-14 bg-[var(--nb-bg)] rounded-md border-2 border-[var(--nb-border)] animate-pulse" />
+          <div className="h-14 bg-[var(--nb-bg)] rounded-md border-2 border-[var(--nb-border)] animate-pulse" />
         </div>
       ) : (
         <div className="space-y-2.5">
           {agents.map((agent) => (
             <div
               key={agent.tokenId}
-              className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.08] hover:bg-white/[0.04] transition-all duration-200"
+              className="flex items-center gap-3 p-3 rounded-lg bg-white border-2 border-[var(--nb-border)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all duration-150"
+              style={{ boxShadow: '2px 2px 0px 0px #1a1a2e' }}
             >
               <RoleIcon role={agent.role} size={16} />
 
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium text-[var(--text-primary)] truncate">
+                <div className="text-sm font-bold text-[var(--nb-foreground)] truncate">
                   {agent.name}
                 </div>
-                <div className="text-xs text-[var(--text-tertiary)]">
+                <div className="text-xs font-semibold text-[var(--nb-text-muted)]">
                   {agent.role}
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
                 <span
-                  className={`status-dot ${
-                    agent.isActive ? 'status-dot-active' : 'status-dot-inactive'
+                  className={`nb-status-dot ${
+                    agent.isActive ? 'nb-status-dot-active' : 'nb-status-dot-inactive'
                   }`}
                 />
                 <span
-                  className={`text-[10px] font-medium uppercase tracking-wider ${
+                  className={`text-[10px] font-bold uppercase tracking-wider ${
                     agent.isActive
-                      ? 'text-[var(--accent-emerald)]'
-                      : 'text-[var(--text-muted)]'
+                      ? 'text-emerald-700'
+                      : 'text-[var(--nb-text-muted)]'
                   }`}
                 >
                   {agent.isActive ? 'Online' : 'Offline'}
@@ -90,10 +91,10 @@ export default function AgentsPanel({ refreshKey }: AgentsPanelProps) {
 
           {agents.length === 0 && (
             <div className="text-center py-8">
-              <div className="icon-container icon-glow-cyan mx-auto mb-3">
+              <div className="nb-icon-container nb-icon-cyan mx-auto mb-3">
                 <Users size={18} />
               </div>
-              <p className="text-sm text-[var(--text-tertiary)]">
+              <p className="text-sm font-bold text-[var(--nb-text-muted)]">
                 No agents registered
               </p>
             </div>

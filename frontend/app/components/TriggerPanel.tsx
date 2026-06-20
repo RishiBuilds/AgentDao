@@ -53,21 +53,21 @@ export default function TriggerPanel({ onComplete }: TriggerPanelProps) {
     small: {
       name: 'Small Campaign',
       description: 'Social media campaign, 0.1–0.15 MON, likely approved',
-      icon: <CircleDot size={14} className="text-emerald-400" />,
+      icon: <CircleDot size={14} className="text-emerald-600" />,
       prompt:
         'Create a focused Twitter campaign for Web3 developers. Budget: 0.12 MON for sponsored tweets. Duration: 1 week.',
     },
     large: {
       name: 'Large Campaign',
       description: 'Massive advertising, 0.7–0.8 MON, likely rejected',
-      icon: <Zap size={14} className="text-rose-400" />,
+      icon: <Zap size={14} className="text-rose-600" />,
       prompt:
         'Launch a massive global advertising blitz across TV and billboards. Budget: 0.75 MON for 2-month campaign.',
     },
     medium: {
       name: 'Medium Campaign',
       description: 'Experimental project, 0.25 MON, edge case',
-      icon: <BarChart3 size={14} className="text-amber-400" />,
+      icon: <BarChart3 size={14} className="text-amber-600" />,
       prompt:
         'Run an experimental NFT drop campaign. Budget: 0.25 MON for smart contracts and marketing. Uncertain ROI.',
     },
@@ -135,34 +135,33 @@ export default function TriggerPanel({ onComplete }: TriggerPanelProps) {
   const getTimelineDotClass = (status: string) => {
     switch (status) {
       case 'success':
-        return 'timeline-dot-success';
+        return 'nb-timeline-dot-success';
       case 'error':
-        return 'timeline-dot-error';
+        return 'nb-timeline-dot-error';
       default:
-        return 'timeline-dot-info';
+        return 'nb-timeline-dot-info';
     }
   };
 
   return (
-    <div className="glass-card-elevated p-6 sticky top-8">
+    <div className="nb-card-elevated p-6 sticky top-8">
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
+        <h2 className="text-sm font-bold uppercase tracking-widest text-[var(--nb-foreground)]">
           Autonomous Control
         </h2>
-        <GlowIcon icon={Play} glowClass="icon-glow-violet" size={18} />
+        <GlowIcon icon={Play} glowClass="nb-icon-violet" size={18} />
       </div>
 
-      {/* ─── Scenario Selector ─── */}
       <div className="mb-5">
-        <label className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider block mb-2.5">
+        <label className="text-xs font-bold text-[var(--nb-text-muted)] uppercase tracking-widest block mb-2.5">
           Select Scenario
         </label>
         <div className="space-y-2">
           {Object.entries(scenarios).map(([key, s]) => (
             <label
               key={key}
-              className={`scenario-card flex items-start gap-3 ${
-                scenario === key ? 'scenario-card-selected' : ''
+              className={`nb-scenario-card flex items-start gap-3 ${
+                scenario === key ? 'nb-scenario-card-selected' : ''
               }`}
             >
               <input
@@ -176,10 +175,10 @@ export default function TriggerPanel({ onComplete }: TriggerPanelProps) {
               />
               <div className="mt-0.5">{s.icon}</div>
               <div>
-                <div className="text-sm font-medium text-[var(--text-primary)]">
+                <div className="text-sm font-bold text-[var(--nb-foreground)]">
                   {s.name}
                 </div>
-                <div className="text-xs text-[var(--text-tertiary)] mt-0.5 leading-relaxed">
+                <div className="text-xs font-medium text-[var(--nb-text-muted)] mt-0.5 leading-relaxed">
                   {s.description}
                 </div>
               </div>
@@ -188,11 +187,10 @@ export default function TriggerPanel({ onComplete }: TriggerPanelProps) {
         </div>
       </div>
 
-      {/* ─── Trigger Button ─── */}
       <button
         onClick={runAutonomousLoop}
         disabled={running}
-        className="btn-primary w-full"
+        className="nb-btn w-full"
       >
         {running ? (
           <>
@@ -207,33 +205,32 @@ export default function TriggerPanel({ onComplete }: TriggerPanelProps) {
         )}
       </button>
 
-      {/* ─── Live Activity Log ─── */}
       {logs.length > 0 && (
         <div className="mt-6">
-          <h3 className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-3">
+          <h3 className="text-xs font-bold text-[var(--nb-text-muted)] uppercase tracking-widest mb-3">
             Live Activity
           </h3>
-          <div className="space-y-0 max-h-96 overflow-y-auto rounded-xl bg-white/[0.02] border border-white/[0.04] p-4">
+          <div className="nb-log-container space-y-0 max-h-96 overflow-y-auto p-4">
             {logs.map((log, i) => (
-              <div key={i} className="timeline-item pb-3">
-                <div className={`timeline-dot ${getTimelineDotClass(log.status)}`} />
+              <div key={i} className="nb-timeline-item pb-3">
+                <div className={`nb-timeline-dot ${getTimelineDotClass(log.status)}`} />
                 <div className="flex items-start gap-2">
-                  <span className="text-[var(--text-muted)] flex-shrink-0 mt-0.5">
+                  <span className="text-[var(--nb-text-muted)] flex-shrink-0 mt-0.5">
                     {logIcons[log.step] || <CircleDot size={12} />}
                   </span>
                   <div className="flex-1 min-w-0">
                     <span
-                      className={`text-xs ${
+                      className={`text-xs font-bold ${
                         log.status === 'success'
-                          ? 'text-[var(--accent-emerald)]'
+                          ? 'text-emerald-700'
                           : log.status === 'error'
-                          ? 'text-[var(--accent-rose)]'
-                          : 'text-[var(--text-secondary)]'
+                          ? 'text-rose-700'
+                          : 'text-[var(--nb-foreground)]'
                       }`}
                     >
                       {log.message}
                     </span>
-                    <span className="text-[10px] text-[var(--text-muted)] ml-2 font-mono">
+                    <span className="text-[10px] text-[var(--nb-text-muted)] ml-2 font-mono font-bold">
                       {log.timestamp}
                     </span>
                   </div>
@@ -244,27 +241,26 @@ export default function TriggerPanel({ onComplete }: TriggerPanelProps) {
         </div>
       )}
 
-      {/* ─── Info Section ─── */}
-      <div className="mt-5 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+      <div className="mt-5 nb-info-box p-4">
         <div className="flex items-center gap-1.5 mb-2.5">
-          <Info size={12} className="text-[var(--text-muted)]" />
-          <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+          <Info size={12} className="text-amber-700" />
+          <span className="text-[10px] font-bold text-amber-800 uppercase tracking-widest">
             How it works
           </span>
         </div>
-        <ol className="space-y-1.5">
+        <ol className="space-y-2">
           {[
-            { icon: <Megaphone size={10} />, text: 'Marketing Agent proposes campaign' },
-            { icon: <Briefcase size={10} />, text: 'Finance Agent reviews & decides' },
-            { icon: <Link size={10} />, text: 'Proposal submitted on-chain' },
-            { icon: <Vote size={10} />, text: 'Vote cast based on AI decision' },
-            { icon: <CheckCircle2 size={10} />, text: 'State updated on blockchain' },
+            { icon: <Megaphone size={11} />, text: 'Marketing Agent proposes campaign' },
+            { icon: <Briefcase size={11} />, text: 'Finance Agent reviews & decides' },
+            { icon: <Link size={11} />, text: 'Proposal submitted on-chain' },
+            { icon: <Vote size={11} />, text: 'Vote cast based on AI decision' },
+            { icon: <CheckCircle2 size={11} />, text: 'State updated on blockchain' },
           ].map((item, i) => (
             <li
               key={i}
-              className="flex items-center gap-2 text-xs text-[var(--text-tertiary)]"
+              className="flex items-center gap-2.5 text-xs font-semibold text-amber-900"
             >
-              <span className="text-[var(--text-muted)] flex-shrink-0">
+              <span className="text-amber-700 flex-shrink-0 w-5 h-5 flex items-center justify-center rounded border border-amber-600 bg-amber-100">
                 {item.icon}
               </span>
               {item.text}

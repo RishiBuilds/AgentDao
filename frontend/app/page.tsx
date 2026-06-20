@@ -19,7 +19,6 @@ export default function Dashboard() {
   const [blockNumber, setBlockNumber] = useState<string | null>(null);
   const [networkStatus, setNetworkStatus] = useState<'connected' | 'error'>('error');
 
-  // Auto-refresh every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setRefreshKey(prev => prev + 1);
@@ -27,7 +26,6 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  // Fetch block number
   useEffect(() => {
     const fetchBlock = async () => {
       try {
@@ -57,43 +55,44 @@ export default function Dashboard() {
   ];
 
   return (
-    <main className="min-h-screen animated-gradient-bg text-white">
-      {/* ─── Header ─── */}
-      <header className="border-b border-white/[0.06]">
+    <main className="min-h-screen nb-grid-bg">
+      <header className="border-b-3 border-[var(--nb-border)]" style={{ borderBottomWidth: '3px' }}>
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="icon-container-lg icon-glow-violet">
+            <div
+              className="nb-icon-container-lg nb-icon-violet flex items-center justify-center"
+              style={{ boxShadow: '3px 3px 0px 0px #1a1a2e' }}
+            >
               <Activity size={24} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight gradient-text">
+              <h1 className="text-2xl font-extrabold tracking-tight text-[var(--nb-foreground)]">
                 AgentDAO
               </h1>
-              <p className="text-xs text-[var(--text-tertiary)] mt-0.5">
+              <p className="text-xs font-bold text-[var(--nb-text-muted)] mt-0.5 uppercase tracking-wider">
                 Autonomous AI Governance on Monad
               </p>
             </div>
           </div>
 
-          {/* Network Status */}
           <div className="flex items-center gap-3">
-            <div className="stat-card">
-              <Globe size={14} className="text-[var(--text-tertiary)]" />
-              <span className="text-xs font-medium text-[var(--text-secondary)]">
+            <div className="nb-stat-card">
+              <Globe size={14} className="text-[var(--nb-text-muted)]" />
+              <span className="text-xs font-bold text-[var(--nb-foreground)]">
                 Monad Testnet
               </span>
               <span
-                className={`status-dot ${
+                className={`nb-status-dot ${
                   networkStatus === 'connected'
-                    ? 'status-dot-live'
-                    : 'status-dot-inactive'
+                    ? 'nb-status-dot-live'
+                    : 'nb-status-dot-inactive'
                 }`}
               />
             </div>
             {blockNumber && (
-              <div className="stat-card">
-                <Box size={14} className="text-[var(--text-tertiary)]" />
-                <span className="text-xs font-mono text-[var(--text-secondary)]">
+              <div className="nb-stat-card">
+                <Box size={14} className="text-[var(--nb-text-muted)]" />
+                <span className="text-xs font-mono font-bold text-[var(--nb-foreground)]">
                   #{parseInt(blockNumber).toLocaleString()}
                 </span>
               </div>
@@ -102,36 +101,32 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {/* ─── Main Content ─── */}
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Treasury & Agents Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in-up">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 nb-animate-in">
               <TreasuryPanel refreshKey={refreshKey} />
               <AgentsPanel refreshKey={refreshKey} />
             </div>
-
-            {/* Proposals */}
-            <div className="animate-fade-in-up animate-delay-200">
+            <div className="nb-animate-in nb-delay-200">
               <ProposalsPanel refreshKey={refreshKey} />
             </div>
           </div>
-
-          {/* Right Column - Trigger */}
-          <div className="lg:col-span-1 animate-fade-in-up animate-delay-300">
+          <div className="lg:col-span-1 nb-animate-in nb-delay-300">
             <TriggerPanel onComplete={handleTriggerComplete} />
           </div>
         </div>
 
-        {/* ─── Footer ─── */}
-        <footer className="mt-12 pt-6 border-t border-white/[0.06]">
+        <footer className="mt-12 pt-6" style={{ borderTop: '3px solid var(--nb-border)' }}>
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
-              <Zap size={12} />
-              <span>Contracts deployed on Monad Testnet</span>
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--nb-foreground)] uppercase tracking-wider px-3 py-1.5 rounded border-2 border-[var(--nb-border)] bg-[var(--nb-violet-bg)]"
+                style={{ boxShadow: '2px 2px 0px 0px #1a1a2e' }}
+              >
+                <Zap size={12} />
+                Contracts deployed on Monad Testnet
+              </span>
             </div>
 
             <div className="flex items-center gap-3 flex-wrap justify-center">
@@ -141,7 +136,8 @@ export default function Dashboard() {
                   href={explorerAddressUrl(c.address)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-xs text-[var(--text-tertiary)] hover:text-[var(--accent-violet)] transition-colors"
+                  className="flex items-center gap-1.5 text-xs font-bold text-[var(--nb-foreground)] px-2.5 py-1 rounded border-2 border-[var(--nb-border)] bg-[var(--nb-bg-secondary)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+                  style={{ boxShadow: '2px 2px 0px 0px #1a1a2e' }}
                 >
                   <span>{c.name}</span>
                   <ExternalLink size={10} />
@@ -150,7 +146,9 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <p className="text-center text-[10px] text-[var(--text-muted)] mt-4 pb-4">
+          <p
+            className="text-center text-xs font-bold text-[var(--nb-text-muted)] mt-6 pb-4 uppercase tracking-widest"
+          >
             An AI company running itself — Powered by autonomous agents
           </p>
         </footer>
