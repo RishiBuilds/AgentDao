@@ -1,0 +1,42 @@
+{
+  "network": "monad-testnet",
+  "chainId": 10143,
+  "rpcUrl": "https://testnet-rpc.monad.xyz/",
+  "explorer": "https://explorer.testnet.monad.xyz/",
+  "deployedAt": "2026-06-20",
+  "deployer": "0xE902143bf447c5F7C2342509F712Dc4492207D75",
+  "totalGasUsed": "8105001 gas",
+  "totalCostMON": "0.879953753697329439 MON",
+  "contracts": {
+    "AgentIdentity": {
+      "address": "0x6603D208dc953D829D119657Ee3FabE45eef650a",
+      "txHash": "0x5d645b7e1cfa65f3bf70f49c3bb210c8504787572f43897d18d44887ee9c0145",
+      "block": 39419086,
+      "gasUsed": "3685279 gas",
+      "gasCost": "0.400107919724123481 MON",
+      "explorerUrl": "https://explorer.testnet.monad.xyz/address/0x6603D208dc953D829D119657Ee3FabE45eef650a"
+    },
+    "AgentTreasury": {
+      "address": "0xE6458223f6ab5F7d67Cc1FCf7c311fdAEABE09d6",
+      "txHash": "0x26fa4b620c215d3d3e9c824dc6e229a02a68bb1e546a1ca363c45f279e9ecc1f",
+      "block": 39419091,
+      "gasUsed": "1588736 gas",
+      "gasCost": "0.172487851245679104 MON",
+      "explorerUrl": "https://explorer.testnet.monad.xyz/address/0xE6458223f6ab5F7d67Cc1FCf7c311fdAEABE09d6"
+    },
+    "AgentGovernor": {
+      "address": "0x6FAD0433f907182EFeeF734F156aac29e7bDDFcf",
+      "txHash": "0xddecddc6af097a5cf1d022b7a72a35d55c2886a575b82bd24d2a91aa61c53ed7",
+      "block": 39419098,
+      "gasUsed": "2751828 gas",
+      "gasCost": "0.298763859267804492 MON",
+      "explorerUrl": "https://explorer.testnet.monad.xyz/address/0x6FAD0433f907182EFeeF734F156aac29e7bDDFcf"
+    }
+  },
+  "configuration": {
+    "votingDelay": "1 block",
+    "votingPeriod": "100 blocks",
+    "quorum": "2 votes",
+    "governanceSetTx": "0xb62c5c2794bcfbd759b762def6b299b28ba4a75ba35c95a742a8c04862d97554"
+  }
+}

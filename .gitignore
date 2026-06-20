@@ -1,0 +1,61 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+.pytest_cache/
+.mypy_cache/
+
+# Production / build
+build/
+dist/
+out/
+.next/
+*.tsbuildinfo
+
+# Environment
+.env
+.env*.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Foundry (compile cache only; broadcast/ is tracked for deployment records)
+cache/
+out/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+agents/run_logs/
+agents/test_results.json
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+*.pem
+
+# Vercel
+.vercel/
+
+# Misc
+next-env.d.ts
