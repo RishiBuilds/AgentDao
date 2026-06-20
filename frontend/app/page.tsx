@@ -14,23 +14,57 @@ import ProposalsPanel from './components/ProposalsPanel';
 import TriggerPanel from './components/TriggerPanel';
 import { apiUrl, config, explorerAddressUrl } from '@/lib/config';
 
+type NetworkStatus = 'connecting' | 'connected' | 'error';
+
+interface BlockApiResponse {
+  success: boolean;
+  data?: { blockNumber: string };
+}
+
+const REFRESH_INTERVAL_MS = 5000;
+const BLOCK_POLL_INTERVAL_MS = 10000;
+
+const CONTRACT_LINKS = [
+  { name: 'AgentIdentity', address: config.contracts.AgentIdentity },
+  { name: 'AgentTreasury', address: config.contracts.AgentTreasury },
+  { name: 'AgentGovernor', address: config.contracts.AgentGovernor },
+];
+
+function parseBlockNumber(value: string): number {
+  const radix = value.startsWith('0x') || value.startsWith('0X') ? 16 : 10;
+  return Number.parseInt(value, radix);
+}
+
 export default function Dashboard() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [blockNumber, setBlockNumber] = useState<string | null>(null);
-  const [networkStatus, setNetworkStatus] = useState<'connected' | 'error'>('error');
+  const [networkStatus, setNetworkStatus] = useState<NetworkStatus>('connecting');
 
   useEffect(() => {
     const interval = setInterval(() => {
       setRefreshKey(prev => prev + 1);
-    }, 5000);
+    }, REFRESH_INTERVAL_MS);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
+    let requestId = 0;
+    let cancelled = false;
+    let activeController: AbortController | null = null;
+
     const fetchBlock = async () => {
+      const thisRequestId = ++requestId;
+      activeController?.abort();
+      const controller = new AbortController();
+      activeController = controller;
+
       try {
-        const res = await fetch(apiUrl('/api/block'));
-        const data = await res.json();
+        const res = await fetch(apiUrl('/api/block'), { signal: controller.signal });
+        if (!res.ok) throw new Error(`Block endpoint returned ${res.status}`);
+
+        const data: BlockApiResponse = await res.json();
+        if (cancelled || thisRequestId !== requestId) return;
+
         if (data && data.success && data.data) {
           setBlockNumber(data.data.blockNumber);
           setNetworkStatus('connected');
@@ -38,32 +72,37 @@ export default function Dashboard() {
           setNetworkStatus('error');
         }
       } catch {
-        setNetworkStatus('error');
+        if (controller.signal.aborted) return;
+        if (!cancelled && thisRequestId === requestId) {
+          setNetworkStatus('error');
+        }
       }
     };
+
     fetchBlock();
-    const interval = setInterval(fetchBlock, 10000);
-    return () => clearInterval(interval);
+    const interval = setInterval(fetchBlock, BLOCK_POLL_INTERVAL_MS);
+
+    return () => {
+      cancelled = true;
+      activeController?.abort();
+      clearInterval(interval);
+    };
   }, []);
 
   const handleTriggerComplete = () => {
     setRefreshKey(prev => prev + 1);
   };
 
-  const contractLinks = [
-    { name: 'AgentIdentity', address: config.contracts.AgentIdentity },
-    { name: 'AgentTreasury', address: config.contracts.AgentTreasury },
-    { name: 'AgentGovernor', address: config.contracts.AgentGovernor },
-  ];
+  const parsedBlockNumber = blockNumber !== null ? parseBlockNumber(blockNumber) : Number.NaN;
 
   return (
     <main className="min-h-screen nb-grid-bg">
-      <header className="border-b-3 border-[var(--nb-border)]" style={{ borderBottomWidth: '3px' }}>
+      <header className="border-b-[3px] border-[var(--nb-border)]">
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div
               className="nb-icon-container-lg nb-icon-violet flex items-center justify-center"
-              style={{ boxShadow: '3px 3px 0px 0px #1a1a2e' }}
+              style={{ boxShadow: 'var(--nb-shadow-hover)' }}
             >
               <Activity size={24} />
             </div>
@@ -89,13 +128,21 @@ export default function Dashboard() {
                     ? 'nb-status-dot-live'
                     : 'nb-status-dot-inactive'
                 }`}
+                role="status"
+                aria-label={
+                  networkStatus === 'connected'
+                    ? 'Network connected'
+                    : networkStatus === 'connecting'
+                    ? 'Connecting to network'
+                    : 'Network disconnected'
+                }
               />
             </div>
-            {blockNumber && (
+            {Number.isFinite(parsedBlockNumber) && (
               <div className="nb-stat-card">
                 <Box size={14} className="text-[var(--nb-text-muted)]" />
                 <span className="text-xs font-mono font-bold text-[var(--nb-foreground)]">
-                  #{parseInt(blockNumber).toLocaleString()}
+                  #{parsedBlockNumber.toLocaleString()}
                 </span>
               </div>
             )}
@@ -119,27 +166,24 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <footer className="mt-12 pt-6" style={{ borderTop: '3px solid var(--nb-border)' }}>
+        <footer className="mt-12 pt-6 border-t-[3px] border-[var(--nb-border)]">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <span
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--nb-foreground)] uppercase tracking-wider px-3 py-1.5 rounded border-2 border-[var(--nb-border)] bg-[var(--nb-violet-bg)]"
-                style={{ boxShadow: '2px 2px 0px 0px #1a1a2e' }}
-              >
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--nb-foreground)] uppercase tracking-wider px-3 py-1.5 rounded border-2 border-[var(--nb-border)] bg-[var(--nb-violet-bg)] shadow-[var(--nb-shadow-sm)]">
                 <Zap size={12} />
                 Contracts deployed on Monad Testnet
               </span>
             </div>
 
             <div className="flex items-center gap-3 flex-wrap justify-center">
-              {contractLinks.map((c) => (
+              {CONTRACT_LINKS.map((c) => (
                 <a
                   key={c.name}
                   href={explorerAddressUrl(c.address)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-xs font-bold text-[var(--nb-foreground)] px-2.5 py-1 rounded border-2 border-[var(--nb-border)] bg-[var(--nb-bg-secondary)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
-                  style={{ boxShadow: '2px 2px 0px 0px #1a1a2e' }}
+                  aria-label={`View ${c.name} on the block explorer (opens in a new tab)`}
+                  className="flex items-center gap-1.5 text-xs font-bold text-[var(--nb-foreground)] px-2.5 py-1 rounded border-2 border-[var(--nb-border)] bg-[var(--nb-bg-secondary)] shadow-[var(--nb-shadow-sm)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
                 >
                   <span>{c.name}</span>
                   <ExternalLink size={10} />
@@ -148,9 +192,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <p
-            className="text-center text-xs font-bold text-[var(--nb-text-muted)] mt-6 pb-4 uppercase tracking-widest"
-          >
+          <p className="text-center text-xs font-bold text-[var(--nb-text-muted)] mt-6 pb-4 uppercase tracking-widest">
             An AI company running itself — Powered by autonomous agents
           </p>
         </footer>
