@@ -29,9 +29,14 @@ export default function AgentsPanel({ refreshKey }: AgentsPanelProps) {
     try {
       const res = await fetch(apiUrl('/api/agents'));
       const data = await res.json();
-      setAgents(data.data);
+      if (data && data.success && Array.isArray(data.data)) {
+        setAgents(data.data);
+      } else {
+        setAgents([]);
+      }
     } catch (error) {
       console.error('Failed to fetch agents:', error);
+      setAgents([]);
     } finally {
       setLoading(false);
     }

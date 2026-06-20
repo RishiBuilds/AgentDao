@@ -31,9 +31,11 @@ export default function Dashboard() {
       try {
         const res = await fetch(apiUrl('/api/block'));
         const data = await res.json();
-        if (data.success) {
+        if (data && data.success && data.data) {
           setBlockNumber(data.data.blockNumber);
           setNetworkStatus('connected');
+        } else {
+          setNetworkStatus('error');
         }
       } catch {
         setNetworkStatus('error');

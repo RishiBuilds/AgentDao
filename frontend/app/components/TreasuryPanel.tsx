@@ -22,10 +22,17 @@ export default function TreasuryPanel({ refreshKey }: TreasuryPanelProps) {
     try {
       const res = await fetch(apiUrl('/api/treasury/balance'));
       const data = await res.json();
-      setBalance(data.data.balance);
-      setBalanceWei(data.data.balanceWei);
+      if (data && data.success && data.data) {
+        setBalance(data.data.balance);
+        setBalanceWei(data.data.balanceWei);
+      } else {
+        setBalance(null);
+        setBalanceWei(null);
+      }
     } catch (error) {
       console.error('Failed to fetch balance:', error);
+      setBalance(null);
+      setBalanceWei(null);
     } finally {
       setLoading(false);
     }
