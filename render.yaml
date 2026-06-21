@@ -12,4 +12,4 @@ services:
       - key: MONAD_RPC_URL
         value: https://testnet-rpc.monad.xyz/
       - key: PRIVATE_KEY
-        sync: false # User will fill this in Render Dashboard
+        sync: false

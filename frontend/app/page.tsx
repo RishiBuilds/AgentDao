@@ -193,7 +193,7 @@ export default function Dashboard() {
           </div>
 
           <p className="text-center text-xs font-bold text-[var(--nb-text-muted)] mt-6 pb-4 uppercase tracking-widest">
-            An AI company running itself — Powered by autonomous agents
+            An AI company running itself - Powered by autonomous agents
           </p>
         </footer>
       </div>

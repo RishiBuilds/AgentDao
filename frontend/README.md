@@ -14,11 +14,11 @@ Open http://localhost:3000
 
 ## Environment Variables
 
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_BACKEND_URL` | Backend API URL (default: http://localhost:3001) |
-| `NEXT_PUBLIC_CHAIN_ID` | Monad testnet chain ID (10143) |
-| `NEXT_PUBLIC_EXPLORER_URL` | Block explorer base URL |
+| Variable                   | Description                                      |
+| -------------------------- | ------------------------------------------------ |
+| `NEXT_PUBLIC_BACKEND_URL`  | Backend API URL (default: http://localhost:3001) |
+| `NEXT_PUBLIC_CHAIN_ID`     | Monad testnet chain ID (10143)                   |
+| `NEXT_PUBLIC_EXPLORER_URL` | Block explorer base URL                          |
 
 ## Notes
 

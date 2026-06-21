@@ -1,6 +1,6 @@
 # AgentDAO 🤖⛓️
 
-> **Autonomous AI agent governance on Monad testnet** — AI agents propose marketing campaigns, a finance agent evaluates and approves them, and approved proposals flow through on-chain governance to release treasury funds all without human intervention.
+> **Autonomous AI agent governance on Monad testnet** - AI agents propose marketing campaigns, a finance agent evaluates and approves them, and approved proposals flow through on-chain governance to release treasury funds all without human intervention.
 
 [![Monad Testnet](https://img.shields.io/badge/Network-Monad%20Testnet-blueviolet)](https://testnet.monad.xyz/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
@@ -36,7 +36,7 @@ AgentDAO demonstrates a fully autonomous, AI-driven governance loop on-chain:
 1. **Marketing Agent** generates campaign proposals with estimated ROI, budget, and rationale using an LLM (Groq).
 2. **Finance Agent** evaluates each proposal against treasury constraints and DAO rules, then approves or rejects it on-chain.
 3. **Governance Contracts** hold approved proposals in a timelock queue; once the voting period passes, treasury funds are released automatically.
-4. **Frontend Dashboard** gives human observers real-time visibility into every agent action and on-chain state — no intervention required.
+4. **Frontend Dashboard** gives human observers real-time visibility into every agent action and on-chain state - no intervention required.
 
 This is a reference implementation for **agent-native DAOs**: organizations where AI agents are first-class governance participants with verifiable on-chain identities.
 
@@ -84,7 +84,7 @@ This is a reference implementation for **agent-native DAOs**: organizations wher
 | `AgentTreasury` | Holds DAO funds; releases them only on governance approval            |
 | `GovernorDAO`   | Proposal lifecycle: submission → voting → timelock → execution        |
 
-All contracts are deployed on **Monad testnet** — addresses in [`config/deployments.json`](config/deployments.json).
+All contracts are deployed on **Monad testnet** - addresses in [`config/deployments.json`](config/deployments.json).
 
 ---
 
@@ -94,9 +94,9 @@ All contracts are deployed on **Monad testnet** — addresses in [`config/deploy
 | -------------------- | ------- | --------------------------------------------------------------------------------------------------- |
 | Node.js              | 18+     | Backend and frontend                                                                                |
 | Python               | 3.10+   | Agent runtime                                                                                       |
-| Foundry              | latest  | Smart contract toolchain — [install guide](https://book.getfoundry.sh/getting-started/installation) |
-| Groq API key         | —       | Free tier at [console.groq.com](https://console.groq.com/keys)                                      |
-| Monad testnet wallet | —       | Funded with testnet MON                                                                             |
+| Foundry              | latest  | Smart contract toolchain - [install guide](https://book.getfoundry.sh/getting-started/installation) |
+| Groq API key         | -       | Free tier at [console.groq.com](https://console.groq.com/keys)                                      |
+| Monad testnet wallet | -       | Funded with testnet MON                                                                             |
 
 ---
 
@@ -343,7 +343,7 @@ AgentDAO/
 **Backend can't connect to Monad testnet**
 
 - Verify `MONAD_RPC_URL` is set correctly and the testnet is reachable: `curl https://testnet-rpc.monad.xyz/`
-- Check your wallet has testnet MON for gas — use the [faucet](https://faucet.monad.xyz/)
+- Check your wallet has testnet MON for gas - use the [faucet](https://faucet.monad.xyz/)
 
 **Agents fail with Groq API errors**
 
@@ -358,7 +358,7 @@ AgentDAO/
 **Frontend shows no data**
 
 - Verify `NEXT_PUBLIC_API_URL` points to a running backend instance
-- Check browser console for CORS errors — backend defaults to `localhost:3001`
+- Check browser console for CORS errors - backend defaults to `localhost:3001`
 
 ---
 
@@ -366,11 +366,11 @@ AgentDAO/
 
 > ⚠️ This project targets **Monad testnet only**. Do not use with mainnet funds or real assets.
 
-- Never commit `.env` files or private keys to version control — add them to `.gitignore`
-- Backend write endpoints (`POST /api/proposals`, `/api/agents/mint`, vote, execute) are **unauthenticated** — this is intentional for local development; add auth middleware before any public deployment
+- Never commit `.env` files or private keys to version control - add them to `.gitignore`
+- Backend write endpoints (`POST /api/proposals`, `/api/agents/mint`, vote, execute) are **unauthenticated** - this is intentional for local development; add auth middleware before any public deployment
 - Rotate any private key that may have been accidentally exposed
 - The frontend trigger panel is for demo convenience; use `agents/scripts/run_autonomous_loop.py` for real autonomous execution
-- Smart contracts are unaudited — treat all on-chain state as disposable testnet data
+- Smart contracts are unaudited - treat all on-chain state as disposable testnet data
 
 ---
 
@@ -379,7 +379,7 @@ AgentDAO/
 Contributions are welcome! Please:
 
 1. Fork the repo and create a feature branch (`git checkout -b feat/your-feature`)
-2. Follow existing code style — Prettier for JS/TS, Black for Python, `forge fmt` for Solidity
+2. Follow existing code style - Prettier for JS/TS, Black for Python, `forge fmt` for Solidity
 3. Add or update tests for any changed logic
 4. Open a pull request with a clear description of the change and why
 
@@ -401,7 +401,7 @@ For larger changes, open an issue first to discuss the approach.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT - see [LICENSE](LICENSE).
 
 ---
 
