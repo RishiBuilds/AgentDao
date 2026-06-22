@@ -165,7 +165,8 @@ class AutonomousOrchestrator:
             
             # Step 4: Wait for voting period to start
             print("⏳ Step 5: Waiting for voting delay...")
-            self.backend.wait_for_blocks(3)
+            if not self.backend.wait_for_blocks(3, max_wait=60):
+                raise Exception("Timed out waiting for additional blocks to be mined")
             
             if not self.backend.wait_for_voting_period(proposal_id, max_wait=60):
                 raise Exception("Proposal did not become active in time")

@@ -150,25 +150,34 @@ class BackendClient:
         Returns:
             True if proposal became active
         """
-        start_time = time.time()
-        while time.time() - start_time < max_wait:
+        start_time = time.monotonic()
+        while time.monotonic() - start_time < max_wait:
             proposal = self.get_proposal(proposal_id)
             if proposal["state"] == "Active":
                 return True
             time.sleep(2)
         return False
     
-    def wait_for_blocks(self, num_blocks: int = 3):
+    def wait_for_blocks(self, num_blocks: int = 3, max_wait: int = 60) -> bool:
         """Wait for a certain number of blocks to be mined.
         
         Args:
             num_blocks: Number of blocks to wait for
+            max_wait: Maximum seconds to wait before giving up
+
+        Returns:
+            True if the target block height was reached
         """
         current = self.get_current_block()
         target = current + num_blocks
+        start_time = time.monotonic()
         
         while self.get_current_block() < target:
+            if time.monotonic() - start_time >= max_wait:
+                return False
             time.sleep(2)
+
+        return True
     
     def close(self):
         """Close the HTTP client."""
